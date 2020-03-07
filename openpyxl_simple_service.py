@@ -6,38 +6,45 @@ Created on Sat Feb 15 14:46:04 2020
 """
 
 import openpyxl as opxl
-import numpy as np
 
 
 class SimpleExcelService:
 
+    # ワークブックを開く
     def open_wb(self, file_path):
-        # ワークブックを開く
         self.wb = opxl.load_workbook(file_path)
 
+    # ワークシートを開く
     def open_ws(self, sheet_name):
-        # ワークシートを開く
         self.ws = self.wb[sheet_name]
 
+    # 入力されている最大行を返す
     def get_max_row(self):
-        # 入力されている最大行を返す
         return self.ws.max_row
 
+    # 入力されている最大列を返す
     def get_max_column(self):
-        # 入力されている最大列を返す
         return self.ws.max_column
 
+    # 指定したセルから行単位で値を取得する
     def get_rows(self, min_row, min_col):
-        # 指定したセルから行単位で値を取得する
         row_result = [row for row in self.ws.iter_rows(min_row=min_row, min_col=min_col, values_only=True)]
         return row_result
 
+    # 指定箇所に行を挿入する
+    def insert_rows(self, row_num):
+        self.ws.insert_rows(row_num)
+
+    # 指定行を削除する　※複数行同時削除は不可能
+    def delete_rows(self, row_num):
+        self.ws.delete_rows(row_num)
+
+    # ワークブックを保存する
     def save_wb(self, save_path):
-        # ワークブックを保存する
         self.wb.save(save_path)
         print("{}: Saved Successfully".format(save_path))
 
+    # ワークブックを閉じる
     def close_wb(self):
-        # ワークブックを閉じる
         self.wb.close()
         print("closed workbook")
